@@ -1,6 +1,7 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template, redirect, url_for, session, request
 
+import api_getaccountbalance
 import webapi
 
 # create the application object
@@ -55,12 +56,11 @@ def dashboard():
 		user_id = getUserID(session['username'])
 		customer_details = getCustomerDetails(session['userid'])
 		list_of_dep_acc = getListOfDepositAccounts(session['userid'])
-		marketingmsgs = getmarketingmsgs('1')
+		marketingmsgs = getmarketingmsgs()
 		acc_balance = getAccountBalance(session['accountid'])
+		expenditure = api_getaccountbalance.monthly_expenditure_amount(session['accountid'])
 
-
-
-		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
+		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance, expenditure=expenditure)  # render a template
 	else: 
 		return 'You are not logged in'
 
@@ -138,8 +138,8 @@ def getListOfDepositAccounts(userid):
 
 	return list_of_dep_acc
 
-def getmarketingmsgs(msgid):
-	marketingmsgs = webapi.api_getmarketingmsgs(msgid)
+def getmarketingmsgs():
+	marketingmsgs = webapi.api_getmarketingmsgs()
 
 	return marketingmsgs
 
@@ -150,7 +150,7 @@ def getpersonalmsgs(userid):
 	return personalmsgs
 
 def getAccountBalance(accountid):
-	acc_balance = webapi.api_getAccountBalance(accountid)
+	acc_balance = api_getaccountbalance.api_getAccountBalance(accountid)
 
 	return acc_balance
 
@@ -163,16 +163,16 @@ def getAccountBalance(accountid):
 
 
 # def expenditure():
-#     transaction_details = webapi.api_getTransactionDetails()
-#     exp = {}
+ #   transaction_details = webapi.api_getTransactionDetails()
+  #   exp = {}
+#
+ #  for i in transaction_details:
+  #     if i["tag"] not in exp:
+   #         exp[i["tag"]] = 1
+   #     else:
+   #         exp[i["tag"]] += 1
 
-#     for i in transaction_details:
-#         if i["tag"] not in exp:
-#             exp[i["tag"]] = 1
-#         else:
-#             exp[i["tag"]] += 1
-
-#     return exp
+	#return exp
 
 
 # start the server with the 'run()' method

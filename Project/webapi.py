@@ -37,7 +37,7 @@ def api_getCustomerDetails(customerId):
         return None
 
 def api_getTransactionDetails(accountId):
-    api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/transactions/{accountId}?from=01-01-2018&to=02-01-2019"
+    api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/transactions/{accountId}?from=01-01-2018&to=01-30-2020"
     response = requests.get(api_url, headers=api_headers)
 ##    [
 ##      {
@@ -54,6 +54,8 @@ def api_getTransactionDetails(accountId):
         data = json.loads(response.content.decode('utf-8'))
         return data
     else:
+        print("this is the error")
+        print(response.status_code)
         return None
 
 
@@ -82,8 +84,8 @@ def api_getListOfDepositAccounts(customerId):
 api_headers = {'identity': 'T28', 'token': '8a30bcbf-72f0-4a7a-8156-eaf4d554a330'}
 
 
-def api_getmarketingmsgs(messageid):
-    api_url = 'http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/marketing/' + messageid
+def api_getmarketingmsgs():
+    api_url = 'http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/marketing/'
     response = requests.get(api_url, headers=api_headers)
 #     [
 #     {
@@ -107,12 +109,11 @@ def api_getmarketingmsgs(messageid):
 # ]
     if response.status_code == 200:
         data = json.loads(response.content.decode('utf-8'))
-        #return data['summary']
-        print(data)
+        return data
     else:
         return None
 
-print(api_getmarketingmsgs('2')) #hardcoded to marytan first
+#print(api_getmarketingmsgs('2')) #hardcoded to marytan first
 
 
 # 3.5 GET Personal Messages
@@ -142,18 +143,18 @@ def api_getpersonalmsgs(customerid): #standardize to 2 for now - remove for dyna
 
     if response.status_code == 200:
         data = json.loads(response.content.decode('utf-8'))
-        #return data['summary']
+        return data['summary']
         print(data)
     else:
         return None
 
-print(api_getpersonalmsgs('2')) #hardcoded to marytan first
+#print(api_getpersonalmsgs('2')) #hardcoded to marytan first
 
 
 
 def  api_getAccountBalance(accountId):
 	# should we add the month and year in the url?
-    api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{accountId}/balance?month=1&year=2018"
+    api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{accountId}/balance?month=0&year=2020"
     response = requests.get(api_url, headers=api_headers)
 # {
 #     "availableBalance": "11014.92",
