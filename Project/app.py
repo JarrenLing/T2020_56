@@ -1,6 +1,7 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template, redirect, url_for, session, request
 
+import api_getaccountbalance
 import webapi
 
 # create the application object
@@ -10,6 +11,7 @@ app = Flask(__name__, static_url_path='/static')
 users = {
 'user1': 'password1',
 'user2': 'password2'
+
 }
 
 # use decorators to link the function to a url
@@ -45,9 +47,10 @@ def dashboard():
 		list_of_dep_acc = getListOfDepositAccounts()
 		marketingmsgs = getmarketingmsgs()
 		acc_balance = getAccountBalance()
+		expenditure = api_getaccountbalance.monthly_expenditure_amount()
 
 
-		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, transaction_details=transaction_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
+		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, transaction_details=transaction_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance, expenditure = expenditure)  # render a template
 	else: 
 		return 'You are not logged in'
 
@@ -105,7 +108,7 @@ def getpersonalmsgs():
 	return personalmsgs
 
 def getAccountBalance():
-	acc_balance = webapi.api_getAccountBalance()
+	acc_balance = api_getaccountbalance.api_getAccountBalance(79)
 
 	return acc_balance
 
@@ -118,16 +121,16 @@ def getAccountBalance():
 
 
 # def expenditure():
-#     transaction_details = webapi.api_getTransactionDetails()
-#     exp = {}
+ #   transaction_details = webapi.api_getTransactionDetails()
+  #   exp = {}
+#
+ #  for i in transaction_details:
+  #     if i["tag"] not in exp:
+   #         exp[i["tag"]] = 1
+   #     else:
+   #         exp[i["tag"]] += 1
 
-#     for i in transaction_details:
-#         if i["tag"] not in exp:
-#             exp[i["tag"]] = 1
-#         else:
-#             exp[i["tag"]] += 1
-
-#     return exp
+	#return exp
 
 
 # start the server with the 'run()' method
