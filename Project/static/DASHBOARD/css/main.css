@@ -1,6 +1,6 @@
     /* added for topnav and side nav */
     .topnav {
-      height: 15%;
+      height: 20%;
       width: 100%;
       overflow: hidden;
       position: fixed;
@@ -40,7 +40,7 @@
       width: 15%;
       position: fixed;
       z-index: 1;
-      top: 15%;
+      top: 20%;
       left: 0;
       background-color: #ff1a1a;
       overflow-x: hidden;
@@ -67,8 +67,9 @@
     }
 
     .main {
-      margin-top: 15%; /* Same as the width of the sidenav */
+      margin-top: 20%; /* Same as the width of the sidenav */
       margin-left: 15%; /* Same as the width of the sidenav */
-      font-size: 28px; /* Increased text to enable scrolling */
+      font-size: 20px; /* Increased text to enable scrolling */
+      text-align: center;
       padding: 0px 0px;
     }

@@ -3,8 +3,43 @@
 <head>
   <title>Flask transaction</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='dashboard/css/main.css')}}">
 </head>
+
+
+
+
+
+
 <body>
+
+  <div class="container">
+
+      <div class="topnav">
+        <img src="{{ url_for('static',filename='Login/images/desktoplogo.png')}}" align="left">
+        <a href="https://www.dbs.com.sg/ibanking/redirect/index.html?ref=pweb-dbs-security-and-you-phishing" target="_blank">Security & You</a>
+        <a href="https://www.dbs.com.sg/personal/deposits/maintenance-schedule.page" target="_blank">Maintenance Schedule</a>
+        <a href="https://www.dbs.com.sg/personal/ibanking/faq/login.page" target="_blank">Frequently Asked Questions</a>
+        <a href="/transaction">Transaction History</a>        
+        <a href="/transfer" >Transfer</a>
+
+
+
+
+      </div>
+
+    <div class="sidenav">
+      <h1 style="color:black;">Welcome {{customer_details.lastName}} {{customer_details.firstName}}!</h1>
+      <br>
+      <a href="/logout" style="color:black;">Logout <span class="sr-only">(current)</span></a>
+      <br>
+      <p>Current balance:
+        <br>
+        {{bank_balance.accountType}}: {{bank_balance.availableBalance}}
+      </p>
+    </div>
+
+
   <div class="container">
     <h1>Welcome {{session.username}}!</h2>
       <br>
@@ -18,18 +53,45 @@
       <li><a href="/login">Login <span class="sr-only">(current)</span></a></li>
       {% endif %} --> 
 
-      <p>here is the: {{transaction_details}}</p>
 
 
 
 
+<div class="main">
+<table>
+  <thead>
+    <tr>
+      <th scope="column">Date </th>
+      <th scope="column">Tag </th>
+      <th scope="column">Transaction ID</th>
+      <th scope="column">Ref number</th>      
+      <th scope="column">Type</th>   
+      <th scope="column">Amount</th>   
+    </tr>
+  </thead>
 
+  <tbody>
+    <tr>
+      {% for i in range(0,20) %}
 
+        <td> {{date[i]}} </td>
+        <td> {{tag[i]}} </td>
+        <td> {{date[i]}} </td>
+        <td> {{ref_no[i]}} </td>
+        <td> {{ttype[i]}} </td>     
+        <td> {{amount[i]}} </td>    
+    </tr>
+      {% endfor %}
 
+  </tbody>
+</table>
 
-</script>
+</div>
 
 <!-- TABLE -->
+
+
+
 
 
 

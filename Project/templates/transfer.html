@@ -1,36 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Flask transfer</title>
+  <title>Flask expenditure</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='dashboard/css/main.css')}}">
 </head>
 <body>
   <div class="container">
-    <h1>Welcome {{session.username}}!</h2>
-      <br>
 
-      <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
+      <div class="topnav">
+        <img src="{{ url_for('static',filename='Login/images/desktoplogo.png')}}" align="left">
+        <a href="https://www.dbs.com.sg/ibanking/redirect/index.html?ref=pweb-dbs-security-and-you-phishing" target="_blank">Security & You</a>
+        <a href="https://www.dbs.com.sg/personal/deposits/maintenance-schedule.page" target="_blank">Maintenance Schedule</a>
+        <a href="https://www.dbs.com.sg/personal/ibanking/faq/login.page" target="_blank">Frequently Asked Questions</a>
+        <a href="/transaction">Transaction History</a>        
+        <a href="/transfer" >Transfer</a>
+
+
+
+
+      </div>
+
+
+
+
+    <div class="sidenav">
+      <h1 style="color:black;">Welcome {{session.username}}!</h1>
+      <br>
+      <a href="/logout" style="color:black;">Logout <span class="sr-only">(current)</span></a>
+      <br>
+      <p>Current balance:
+        <br>
+        {{bank_balance.accountType}}: {{bank_balance.availableBalance}}
+      </p>
+    </div>
 
       <!-- can be useful don't delete first, if you want a main main page before login -->
       <!-- {% if session['logged_in'] == True %}
       <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
       {% else %}
       <li><a href="/login">Login <span class="sr-only">(current)</span></a></li>
-      {% endif %} --> 
+      {% endif %} -->
+    <div class="main">
+      <h1>Overall Expenditure</h1>
+      <div id="piechart"></div>
+
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+      <script type="text/javascript">
+      // Load google charts
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Draw the chart and set the chart values
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Type', 'Percentage'],
+        ['TRANSFER', {{ overall_expenditure_tags.TRANSFER }}],
+        ['F&B', {{ overall_expenditure_tags["F&B"] }}],
+        ['LEISURE', {{ overall_expenditure_tags.LEISURE }}],
+        ['ONLINE', {{ overall_expenditure_tags.ONLINE }}],
+        ['TRANSPORT', {{ overall_expenditure_tags.TRANSPORT }}],
+        ['ATM', {{ overall_expenditure_tags.ATM }}],
+      ]);
+
+        // Optional; add a title and set the width and height of the chart
+        var options = {'title':'Overall Expenditure by Category', 'width':550, 'height':400};
+
+        // Display the chart inside the <div> element with id="piechart"
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+      </script>
+<!--      {{ overall_expenditure_tags }}-->
+<!--      {{ overall_expenditure_tags.TRANSFER }}-->
 
 
+    </div>
+  </div>
 
-
-
-
-
-
-</script>
-
-<!-- TABLE -->
-
-
-
-</div>
 </body>
-</html> 
+</html>

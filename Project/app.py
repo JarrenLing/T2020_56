@@ -60,6 +60,7 @@ def dashboard():
 		acc_balance = getAccountBalance(session['accountid'])
 		expenditure = api_getaccountbalance.monthly_expenditure_amount(session['accountid'])
 
+
 		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance, expenditure=expenditure)  # render a template
 	else: 
 		return 'You are not logged in'
@@ -75,8 +76,28 @@ def logout():
 def transaction():
 
 	transaction_details = getTransactionDetails(session['accountid'])
+	amount, tag, date, ref_no, ttype = usetransdata(session['accountid'])
+	customer_details = getCustomerDetails(session['userid'])
+	bank_balance = BankBalance(session["accountid"])
 
-	return render_template('transaction.html', transaction_details=transaction_details)  
+
+	return render_template('transaction.html',bank_balance=bank_balance, customer_details=customer_details, transaction_details=transaction_details, amount=amount, tag=tag, date=date, ref_no=ref_no, ttype=ttype)  
+
+
+@app.route('/transfer')
+def transfer():
+
+	total = 0
+	transaction_details = getTransactionDetails(session['accountid'])
+	bank_balance = BankBalance(session["accountid"])
+	overall_expenditure_tags = OverallExpenditureTags(session["accountid"])
+	total = sum(overall_expenditure_tags.values())
+	for i in overall_expenditure_tags:
+		overall_expenditure_tags[i] = float(overall_expenditure_tags[i] *100 / total)
+
+	return render_template('transfer.html', transaction_details=transaction_details, bank_balance =bank_balance, overall_expenditure_tags = overall_expenditure_tags)
+
+
 
 
 @app.route('/personal')
@@ -87,16 +108,14 @@ def personal():
 	return render_template('personal.html', personalmsgs=personalmsgs) 
 
 
-@app.route('/transfer')
-def transfer():
-
-	return render_template('transfer.html') 
-
 
 @app.route('/others')
 def others():
 
 	return render_template('others.html') 
+
+
+
 
 
 # def useCarparkData():
@@ -110,6 +129,26 @@ def others():
 # 	return labels, data
 
 #=================== FUNCTIONS=============================================
+
+def OverallExpenditureTags(accountid): #from 2018 - 2020
+    transaction_details = webapi.api_getTransactionDetails(accountid)
+    amount_exp = {}
+    tag_exp = {}
+    for i in transaction_details:
+        tag = i['tag']
+        amount = float(i['amount'])
+        type_of_transaction = i['type']
+        if type_of_transaction == "DEBIT":
+            if tag not in tag_exp:
+                amount_exp[tag] = amount
+                tag_exp[tag] = 1
+            else:
+                amount_exp[tag] += amount
+                tag_exp[tag] += 1
+
+    return tag_exp
+
+
 
 
 def BankBalance(accountid):
@@ -153,6 +192,26 @@ def getAccountBalance(accountid):
 	acc_balance = api_getaccountbalance.api_getAccountBalance(accountid)
 
 	return acc_balance
+
+
+def usetransdata(accountid):
+	details = webapi.api_getTransactionDetails(accountid)
+	amount=[]
+	tag=[]
+	date=[]
+	ref_no=[]
+	ttype=[]
+	# top10 = details['items'][0]['carpark_data']
+	# labels, data = [], []
+	for each in details: 
+		amount.insert(0,each['amount'])
+		tag.insert(0,each['tag'])
+		date.insert(0,each['date'][:-18])
+		ref_no.insert(0,each['referenceNumber'])
+		ttype.insert(0,each['type'])
+	# labels, data = labels[:10], data[:10]
+	return amount, tag, date, ref_no, ttype
+
 
 
 # def getUserID():

@@ -47,11 +47,15 @@
 
       <div class="topnav">
         <img src="{{ url_for('static',filename='Login/images/desktoplogo.png')}}" align="left">
-        <a href="/dashboard" >Dashboard</a>
-        <a href="/transfer">Transfer</a>
-        <a href="https://www.dbs.com.sg/personal/ibanking/faq/login.page" target="_blank">Frequently Asked Questions</a>
-        <a href="https://www.dbs.com.sg/personal/deposits/maintenance-schedule.page" target="_blank">Maintenance Schedule</a>
         <a href="https://www.dbs.com.sg/ibanking/redirect/index.html?ref=pweb-dbs-security-and-you-phishing" target="_blank">Security & You</a>
+        <a href="https://www.dbs.com.sg/personal/deposits/maintenance-schedule.page" target="_blank">Maintenance Schedule</a>
+        <a href="https://www.dbs.com.sg/personal/ibanking/faq/login.page" target="_blank">Frequently Asked Questions</a>
+        <a href="/transaction">Transaction History</a>        
+        <a href="/transfer" >Transfer</a>
+
+
+
+
       </div>
 
     <div class="sidenav">
@@ -64,11 +68,14 @@
         {{bank_balance.accountType}}: {{bank_balance.availableBalance}}
       </p>
     </div>
-
+<!-- 
       <li><a href="/transfer">transfer <span class="sr-only"></span></a></li>
       <li><a href="/transaction">transaction <span class="sr-only">transaction</span></a></li>
       <li><a href="/personal">personal<span class="sr-only">personal</span></a></li>
-      <li><a href="/others">others<span class="sr-only">others</span></a></li>
+      <li><a href="/others">others<span class="sr-only">others</span></a></li> -->
+
+
+
       <!-- can be useful don't delete first, if you want a main main page before login -->
       <!-- {% if session['logged_in'] == True %}
       <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
@@ -77,10 +84,17 @@
       {% endif %} --> 
     <div class="main">
       <div id="chart_div" style="width: 900px; height: 500px;"></div>
-      <p>{%for i in range(marketingmsgs|length)%}
-        <li>{{marketingmsgs[i].summary}}</li>
-      {%endfor%}
+      <p>
+        <li>{{marketingmsgs[0].summary}} <img src="static/DASHBOARD/images/grab.jpg" alt="Italian Trulli" height="80" width="160"> </li>
+        <li>{{marketingmsgs[1].summary}} <img src="static/DASHBOARD/images/gojek.jpg" alt="Italian Trulli" height="80" width="160"> </li>
+        <li>{{marketingmsgs[2].summary}} <img src="static/DASHBOARD/images/DBS.jpg" alt="Italian Trulli" height="80" width="160"> </li>
       </p>
+
+<!--       <p>
+        <img src="static/DASHBOARD/images/grab.jpg" alt="Italian Trulli">
+        <img src="static/DASHBOARD/images/gojek.jpg" alt="Italian Trulli">
+        <img src="static/DASHBOARD/images/DBS.jpg" alt="Italian Trulli">
+      </p> -->
 
 <!--
       <p>here is the: {{marketingmsgs}}</p>
