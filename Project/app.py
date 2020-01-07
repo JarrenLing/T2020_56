@@ -60,6 +60,7 @@ def dashboard():
 
 
 
+
 		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
 	else: 
 		return 'You are not logged in'
@@ -75,8 +76,10 @@ def logout():
 def transaction():
 
 	transaction_details = getTransactionDetails(session['accountid'])
+	amount, tag, date, ref_no, ttype = usetransdata(session['accountid'])
 
-	return render_template('transaction.html', transaction_details=transaction_details)  
+
+	return render_template('transaction.html', transaction_details=transaction_details, amount=amount, tag=tag, date=date, ref_no=ref_no, ttype=ttype)  
 
 
 @app.route('/personal')
@@ -97,6 +100,9 @@ def transfer():
 def others():
 
 	return render_template('others.html') 
+
+
+
 
 
 # def useCarparkData():
@@ -153,6 +159,26 @@ def getAccountBalance(accountid):
 	acc_balance = webapi.api_getAccountBalance(accountid)
 
 	return acc_balance
+
+
+def usetransdata(accountid):
+	details = webapi.api_getTransactionDetails(accountid)
+	amount=[]
+	tag=[]
+	date=[]
+	ref_no=[]
+	ttype=[]
+	# top10 = details['items'][0]['carpark_data']
+	# labels, data = [], []
+	for each in details: 
+		amount.insert(0,each['amount'])
+		tag.insert(0,each['tag'])
+		date.insert(0,each['date'][:-18])
+		ref_no.insert(0,each['referenceNumber'])
+		ttype.insert(0,each['type'])
+	# labels, data = labels[:10], data[:10]
+	return amount, tag, date, ref_no, ttype
+
 
 
 # def getUserID():
