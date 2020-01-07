@@ -8,8 +8,9 @@ app = Flask(__name__, static_url_path='/static')
 
 # create username and password ## edit
 users = {
-'user1': 'password1',
-'user2': 'password2'
+'limzeyang': 'password1',
+'marytan': 'password2',
+'ahmadfarhan': 'password3'
 }
 
 # use decorators to link the function to a url
@@ -27,7 +28,19 @@ def login():
 		if username in users.keys() and password == users.get(username):
 			session['logged_in'] = True
 			session['username'] = username
+			
+			if username == 'limzeyang':
+				session["accountid"] = 10
+				session['userid'] = 1
+			elif username == "marytan":
+				session["accountid"] = 79
+				session['userid'] = 2
+			elif username == "ahmadfarhan":
+				session["accountid"] = 94
+				session['userid'] = 3
+
 			return redirect(url_for('dashboard'))
+
 
 		else:
 			error = 'Invalid Credentials. Please try again.'
@@ -38,12 +51,13 @@ def login():
 def dashboard():
 	if 'username' in session: ## do not change the 'username'
 		# labels, data = useCarparkData()
-		bank_balance = BankBalance()
-		user_id = getUserID()
-		customer_details = getCustomerDetails()
-		list_of_dep_acc = getListOfDepositAccounts()
-		marketingmsgs = getmarketingmsgs()
-		acc_balance = getAccountBalance()
+		bank_balance = BankBalance(session["accountid"])
+		user_id = getUserID(session['username'])
+		customer_details = getCustomerDetails(session['userid'])
+		list_of_dep_acc = getListOfDepositAccounts(session['userid'])
+		marketingmsgs = getmarketingmsgs('1')
+		acc_balance = getAccountBalance(session['accountid'])
+
 
 
 		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
@@ -60,7 +74,7 @@ def logout():
 @app.route('/transaction')
 def transaction():
 
-	transaction_details = getTransactionDetails()
+	transaction_details = getTransactionDetails(session['accountid'])
 
 	return render_template('transaction.html', transaction_details=transaction_details)  
 
@@ -68,7 +82,7 @@ def transaction():
 @app.route('/personal')
 def personal():
 
-	personalmsgs = getpersonalmsgs()
+	personalmsgs = getpersonalmsgs(session['userid'])
 
 	return render_template('personal.html', personalmsgs=personalmsgs) 
 
@@ -98,45 +112,45 @@ def others():
 #=================== FUNCTIONS=============================================
 
 
-def BankBalance():
+def BankBalance(accountid):
 
-    bank_balance = webapi.api_getAccountBalance()
+    bank_balance = webapi.api_getAccountBalance(accountid)
 
     return bank_balance
 
-def getUserID():
-	user_id = webapi.api_getUserID()
+def getUserID(username):
+	user_id = webapi.api_getUserID(username)
 
 	return user_id
 
-def getCustomerDetails():
-	customer_details = webapi.api_getCustomerDetails()
+def getCustomerDetails(userid):
+	customer_details = webapi.api_getCustomerDetails(userid)
 
 	return customer_details
 
-def getTransactionDetails():
-	transaction_details = webapi.api_getTransactionDetails()
+def getTransactionDetails(accountid):
+	transaction_details = webapi.api_getTransactionDetails(accountid)
 
 	return transaction_details
 
-def getListOfDepositAccounts():
-	list_of_dep_acc = webapi.api_getListOfDepositAccounts()
+def getListOfDepositAccounts(userid):
+	list_of_dep_acc = webapi.api_getListOfDepositAccounts(userid)
 
 	return list_of_dep_acc
 
-def getmarketingmsgs():
-	marketingmsgs = webapi.api_getmarketingmsgs('1')
+def getmarketingmsgs(msgid):
+	marketingmsgs = webapi.api_getmarketingmsgs(msgid)
 
 	return marketingmsgs
 
 
-def getpersonalmsgs():
-	personalmsgs = webapi.api_getpersonalmsgs()
+def getpersonalmsgs(userid):
+	personalmsgs = webapi.api_getpersonalmsgs(userid)
 
 	return personalmsgs
 
-def getAccountBalance():
-	acc_balance = webapi.api_getAccountBalance()
+def getAccountBalance(accountid):
+	acc_balance = webapi.api_getAccountBalance(accountid)
 
 	return acc_balance
 

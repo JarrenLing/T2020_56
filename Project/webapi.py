@@ -4,7 +4,7 @@ import requests
 api_headers = {'identity': 'T28', 'token': '8a30bcbf-72f0-4a7a-8156-eaf4d554a330'}
 
 
-def api_getUserID(username='marytan'):
+def api_getUserID(username):
     api_url = 'http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/customers/' + username
     response = requests.get(api_url, headers=api_headers)
 ##    {
@@ -18,7 +18,7 @@ def api_getUserID(username='marytan'):
         return None
 
 
-def api_getCustomerDetails(customerId=2):
+def api_getCustomerDetails(customerId):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/customers/{customerId}/details"
     response = requests.get(api_url, headers=api_headers)
 ##     {
@@ -36,7 +36,7 @@ def api_getCustomerDetails(customerId=2):
     else:
         return None
 
-def api_getTransactionDetails(accountId=79):
+def api_getTransactionDetails(accountId):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/transactions/{accountId}?from=01-01-2018&to=02-01-2019"
     response = requests.get(api_url, headers=api_headers)
 ##    [
@@ -57,7 +57,7 @@ def api_getTransactionDetails(accountId=79):
         return None
 
 
-def api_getListOfDepositAccounts(customerId=2):
+def api_getListOfDepositAccounts(customerId):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{customerId}"
     response = requests.get(api_url, headers=api_headers)
     # [
@@ -117,7 +117,7 @@ print(api_getmarketingmsgs('2')) #hardcoded to marytan first
 
 # 3.5 GET Personal Messages
 
-def api_getpersonalmsgs(customerid=2): #standardize to 2 for now - remove for dynamism later
+def api_getpersonalmsgs(customerid): #standardize to 2 for now - remove for dynamism later
     api_url = 'http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/message/' + customerid
     response = requests.get(api_url, headers=api_headers)
 
@@ -151,7 +151,7 @@ print(api_getpersonalmsgs('2')) #hardcoded to marytan first
 
 
 
-def  api_getAccountBalance(accountId=79):
+def  api_getAccountBalance(accountId):
 	# should we add the month and year in the url?
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{accountId}/balance?month=1&year=2018"
     response = requests.get(api_url, headers=api_headers)
