@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Flask Intro</title>
+  <title>Flask personal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -11,10 +11,6 @@
 
       <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
 
-      <li><a href="/transfer">transfer <span class="sr-only"></span></a></li>
-      <li><a href="/transaction">transaction <span class="sr-only">transaction</span></a></li>
-      <li><a href="/personal">personal<span class="sr-only">personal</span></a></li>
-      <li><a href="/others">others<span class="sr-only">others</span></a></li>
       <!-- can be useful don't delete first, if you want a main main page before login -->
       <!-- {% if session['logged_in'] == True %}
       <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
@@ -22,13 +18,8 @@
       <li><a href="/login">Login <span class="sr-only">(current)</span></a></li>
       {% endif %} --> 
 
-      <p>here is the: {{bank_balance.availableBalance}}</p>
+      <p>here is the: {{personalmsgs}}</p>
 
-      <p>here is the: {{user_id}}</p>
-      <p>here is the: {{customer_details}}</p>
-      <p>here is the: {{list_of_dep_acc}}</p>
-      <p>here is the: {{marketingmsgs}}</p>
-      <p>here is the: {{acc_balance}}</p>
 
 
 

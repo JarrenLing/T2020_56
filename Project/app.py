@@ -41,13 +41,12 @@ def dashboard():
 		bank_balance = BankBalance()
 		user_id = getUserID()
 		customer_details = getCustomerDetails()
-		transaction_details = getTransactionDetails()
 		list_of_dep_acc = getListOfDepositAccounts()
 		marketingmsgs = getmarketingmsgs()
 		acc_balance = getAccountBalance()
 
 
-		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, transaction_details=transaction_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
+		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
 	else: 
 		return 'You are not logged in'
 
@@ -57,6 +56,34 @@ def logout():
     session.pop('username', None)
     session.pop('logged_in', None)
     return redirect(url_for('login'))
+
+@app.route('/transaction')
+def transaction():
+
+	transaction_details = getTransactionDetails()
+
+	return render_template('transaction.html', transaction_details=transaction_details)  
+
+
+@app.route('/personal')
+def personal():
+
+	personalmsgs = getpersonalmsgs()
+
+	return render_template('personal.html', personalmsgs=personalmsgs) 
+
+
+@app.route('/transfer')
+def transfer():
+
+	return render_template('transfer.html') 
+
+
+@app.route('/others')
+def others():
+
+	return render_template('others.html') 
+
 
 # def useCarparkData():
 # 	details = webapi.getCarparkAvailability('2019-12-31T09:54:15')
@@ -68,7 +95,11 @@ def logout():
 # 	labels, data = labels[:10], data[:10]
 # 	return labels, data
 
+#=================== FUNCTIONS=============================================
+
+
 def BankBalance():
+
     bank_balance = webapi.api_getAccountBalance()
 
     return bank_balance
