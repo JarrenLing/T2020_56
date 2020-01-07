@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flask Intro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome {{session.username}}!</h2>
+      <br>
+
+      <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
+
+      <!-- can be useful don't delete first, if you want a main main page before login -->
+      <!-- {% if session['logged_in'] == True %}
+      <li><a href="/logout">Logout <span class="sr-only">(current)</span></a></li>
+      {% else %}
+      <li><a href="/login">Login <span class="sr-only">(current)</span></a></li>
+      {% endif %} --> 
+
+      <p>here is the: {{data}}</p>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+                      <div id="wrapper" style="position: relative; height: 50vh">
+                        <canvas id="bar-chart"></canvas>
+                      </div>
+     <!--  <canvas id="pie-chart" width="200" height="50"></canvas> -->
+      <!-- <canvas id="pie-chart2" width="200" height="50"></canvas> -->
+                      <div id="wrapper" style="position: relative; height: 50vh">
+                        <canvas id="pie-chart"></canvas>
+
+      <script>
+        var hash = {{ data|tojson }}
+        var labels = {{ labels|tojson }}; // https://stackoverflow.com/questions/41880725/flask-error-passing-variables-to-javascript
+        console.log(labels)
+// Bar chart
+var chart1 = new Chart(document.getElementById("bar-chart"), {
+  type: 'line', //change to 'bar' for bar chart
+  data: {
+    labels: labels,
+    datasets: [
+    {
+      label: "Lots available",
+      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+      data: hash
+    }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: { display: false },
+    title: {
+      display: true,
+      text: 'Carpark Availability'
+    }
+  }
+});
+
+var chart2 = new Chart(document.getElementById("pie-chart"), {
+  type: 'pie',
+  data: {
+    labels: labels,
+    // ["Africa", "Asia", "Europe", "Latin America", "North America"],
+    datasets: [{
+      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+      data: hash
+      // [2478,5267,734,784,433]
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    title: {
+      display: true,
+      text: 'Predicted world population (millions) in 2050'
+    },
+    tooltips: {
+      mode: 'label',
+      callbacks: {
+        label: function(tooltipItem) {
+          let sum = 0;
+          let dataArr = chart2.data.datasets[0].data; // Shows the data that are in the chart
+          //change 'chart2' to variable of the chart. since it is var chart2, it is chart2.data.datasets[0].data
+          console.log(dataArr)
+          dataArr.map(data => {
+            sum += data;
+          });
+          let hoverValue = dataArr[tooltipItem['index']] //
+          let percentage = ((hoverValue / sum)*100).toFixed(2)+"%";
+          let display = ['Percentage: ' + percentage, 'Amount: $' + hoverValue] //next line put in array
+          return display;
+        }
+      }
+    },
+    scale: {
+      ticks: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+
+
+
+
+
+// var chart3 = new Chart(document.getElementById("pie-chart2"), {
+//   type: 'pie',
+//   data: {
+//     labels: labels,
+//     datasets: [{
+//       backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+//       data: hash
+//     }]
+//   },
+//   options: {
+//     title: {
+//       display: true,
+//       text: 'Predicted world population (millions) in 2050'
+//     },
+//     tooltips: {
+//       mode: 'label',
+//       callbacks: {
+//         label: function(tooltipItem) {
+//           let sum = 0;
+//           let dataArr = chart3.data.datasets[0].data; //change 'chart2' to variable of the chart. since it is var chart2, it is chart2.data.datasets[0].data //explain that can also use data too instead of using the settings, but the settings will be more accurate
+//           // console.log(dataArr)
+//           dataArr.map(data => {
+//             sum += data;
+//           });
+//           let hoverValue = dataArr[tooltipItem['index']] //
+//           let percentage = ((hoverValue / sum)*100).toFixed(2)+"%";
+//           let display = ['Percentage: ' + percentage, 'Amount: $' + hoverValue] //next line put in array
+//           return display;
+//         }
+//       }
+//     },
+//     scale: {
+//       ticks: {
+//         beginAtZero: true
+//       }
+//     }
+//   }
+// });
+
+
+</script>
+
+<!-- TABLE -->
+<table>
+  <thead>
+    <tr>
+      <th scope="column">Carpark name </th>
+      <th scope="column">Slots </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      {% for i in range(labels|length) %}
+        <td> {{labels[i]}} </td>
+        <td> {{data[i]}} </td>
+    </tr>
+      {% endfor %}
+
+  </tbody>
+</table>
+
+
+</div>
+</body>
+</html> 
