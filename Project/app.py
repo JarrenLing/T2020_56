@@ -37,8 +37,17 @@ def login():
 @app.route('/dashboard')
 def dashboard():
 	if 'username' in session: ## do not change the 'username'
-		labels, data = useCarparkData()
-		return render_template('dashboard.html', data=data, labels=labels)  # render a template
+		# labels, data = useCarparkData()
+		bank_balance = BankBalance()
+		user_id = getUserID()
+		customer_details = getCustomerDetails()
+		transaction_details = getTransactionDetails()
+		list_of_dep_acc = getListOfDepositAccounts()
+		marketingmsgs = getmarketingmsgs()
+		acc_balance = getAccountBalance()
+
+
+		return render_template('dashboard.html', bank_balance=bank_balance, user_id=user_id, customer_details=customer_details, transaction_details=transaction_details, list_of_dep_acc=list_of_dep_acc, marketingmsgs=marketingmsgs, acc_balance=acc_balance)  # render a template
 	else: 
 		return 'You are not logged in'
 
@@ -49,15 +58,77 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-def useCarparkData():
-	details = webapi.getCarparkAvailability('2019-12-31T09:54:15')
-	top10 = details['items'][0]['carpark_data']
-	labels, data = [], []
-	for each in top10: 
-		labels.append(each['carpark_number'])
-		data.append(int(each['carpark_info'][0]['total_lots']))
-	labels, data = labels[:10], data[:10]
-	return labels, data
+# def useCarparkData():
+# 	details = webapi.getCarparkAvailability('2019-12-31T09:54:15')
+# 	top10 = details['items'][0]['carpark_data']
+# 	labels, data = [], []
+# 	for each in top10: 
+# 		labels.append(each['carpark_number'])
+# 		data.append(int(each['carpark_info'][0]['total_lots']))
+# 	labels, data = labels[:10], data[:10]
+# 	return labels, data
+
+def BankBalance():
+    bank_balance = webapi.api_getAccountBalance()
+
+    return bank_balance
+
+def getUserID():
+	user_id = webapi.api_getUserID()
+
+	return user_id
+
+def getCustomerDetails():
+	customer_details = webapi.api_getCustomerDetails()
+
+	return customer_details
+
+def getTransactionDetails():
+	transaction_details = webapi.api_getTransactionDetails()
+
+	return transaction_details
+
+def getListOfDepositAccounts():
+	list_of_dep_acc = webapi.api_getListOfDepositAccounts()
+
+	return list_of_dep_acc
+
+def getmarketingmsgs():
+	marketingmsgs = webapi.api_getmarketingmsgs('1')
+
+	return marketingmsgs
+
+
+def getpersonalmsgs():
+	personalmsgs = webapi.api_getpersonalmsgs()
+
+	return personalmsgs
+
+def getAccountBalance():
+	acc_balance = webapi.api_getAccountBalance()
+
+	return acc_balance
+
+
+# def getUserID():
+# 	user_details = webapi.api_getUserID()
+# 	username, customerid = [], []
+
+
+
+
+# def expenditure():
+#     transaction_details = webapi.api_getTransactionDetails()
+#     exp = {}
+
+#     for i in transaction_details:
+#         if i["tag"] not in exp:
+#             exp[i["tag"]] = 1
+#         else:
+#             exp[i["tag"]] += 1
+
+#     return exp
+
 
 # start the server with the 'run()' method
 if __name__ == '__main__':

@@ -4,7 +4,7 @@ import requests
 api_headers = {'identity': 'T28', 'token': '8a30bcbf-72f0-4a7a-8156-eaf4d554a330'}
 
 
-def api_getUserID(username):
+def api_getUserID(username='marytan'):
     api_url = 'http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/customers/' + username
     response = requests.get(api_url, headers=api_headers)
 ##    {
@@ -18,7 +18,7 @@ def api_getUserID(username):
         return None
 
 
-def api_getCustomerDetails(customerId):
+def api_getCustomerDetails(customerId=2):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/customers/{customerId}/details"
     response = requests.get(api_url, headers=api_headers)
 ##     {
@@ -36,7 +36,7 @@ def api_getCustomerDetails(customerId):
     else:
         return None
 
-def api_getTransactionDetails(accountId=74):
+def api_getTransactionDetails(accountId=79):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/transactions/{accountId}?from=01-01-2018&to=02-01-2019"
     response = requests.get(api_url, headers=api_headers)
 ##    [
@@ -73,6 +73,8 @@ def api_getListOfDepositAccounts(customerId=2):
         return data
     else:
         return None
+
+
 
 
 #3.4 GET Details of a Marketing Message
@@ -149,7 +151,7 @@ print(api_getpersonalmsgs('2')) #hardcoded to marytan first
 
 
 
-def  api_getAccountBalance(accountId):
+def  api_getAccountBalance(accountId=79):
 	# should we add the month and year in the url?
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{accountId}/balance?month=1&year=2018"
     response = requests.get(api_url, headers=api_headers)
@@ -171,23 +173,6 @@ def  api_getAccountBalance(accountId):
 
 
 
-
-def  api_getListOfDepositAccounts(customerId):
-    api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{customerId}"
-    response = requests.get(api_url, headers=api_headers)
-# [
-#     {
-#         "accountId": 79,
-#         "type": "SAVINGS",
-#         "displayName": "POSB SAVINGS ACCOUNT",
-#         "accountNumber": "490723483"
-#     }
-# ]
-    if response.status_code == 200:
-        data = json.loads(response.content.decode('utf-8'))
-        return data
-    else:
-        return None
 
 
 
