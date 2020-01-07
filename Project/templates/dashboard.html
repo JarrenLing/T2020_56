@@ -47,15 +47,15 @@
 
       <div class="topnav">
         <img src="{{ url_for('static',filename='Login/images/desktoplogo.png')}}" align="left">
-        <a href="" target="_blank">Dashboard</a> #back to dashboard
-        <a href="" target="_blank">Transaction History</a> #to transaction history
+        <a href="/dashboard" >Dashboard</a>
+        <a href="/transfer">Transfer</a>
         <a href="https://www.dbs.com.sg/personal/ibanking/faq/login.page" target="_blank">Frequently Asked Questions</a>
         <a href="https://www.dbs.com.sg/personal/deposits/maintenance-schedule.page" target="_blank">Maintenance Schedule</a>
         <a href="https://www.dbs.com.sg/ibanking/redirect/index.html?ref=pweb-dbs-security-and-you-phishing" target="_blank">Security & You</a>
       </div>
 
     <div class="sidenav">
-      <h1 style="color:black;">Welcome {{session.username}}!</h1>
+      <h1 style="color:black;">Welcome {{customer_details.lastName}} {{customer_details.firstName}}!</h1>
       <br>
       <a href="/logout" style="color:black;">Logout <span class="sr-only">(current)</span></a>
       <br>
@@ -77,7 +77,6 @@
       {% endif %} --> 
     <div class="main">
       <div id="chart_div" style="width: 900px; height: 500px;"></div>
-      <h1>Marketing messages</h1>
       <p>{%for i in range(marketingmsgs|length)%}
         <li>{{marketingmsgs[i].summary}}</li>
       {%endfor%}
